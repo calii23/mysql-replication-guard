@@ -1,4 +1,6 @@
 import { ConnectionConfig } from 'mysql';
+import { Options as SMTPOptions } from 'nodemailer/lib/smtp-connection';
+import { Address } from 'nodemailer/lib/mailer';
 
 export interface StrictConnectionConfig extends ConnectionConfig {
   host: string;
@@ -23,6 +25,60 @@ export interface SlaveMasterConnection {
    * @maxLength 32
    */
   password?: string;
+}
+
+export interface StrictSTMPOptions extends SMTPOptions {
+  /** the hostname or IP address to connect to (defaults to ‘localhost’) */
+  host: string;
+
+  socket?: never;
+}
+
+export interface MailConfig {
+  /**
+   * SMTP connection data
+   */
+  smtp: StrictSTMPOptions;
+
+  /**
+   * The e-mail address of the sender. All e-mail addresses can be plain 'sender@server.com' or formatted 'Sender Name <sender@server.com>'
+   */
+  from: string | Address;
+
+  /**
+   * Comma separated list or an array of recipients e-mail addresses that will appear on the To: field
+   */
+  to: string | Address | Array<string | Address>;
+
+  /**
+   * Comma separated list or an array of recipients e-mail addresses that will appear on the Cc: field
+   */
+  cc?: string | Address | Array<string | Address>;
+
+  /**
+   * Comma separated list or an array of recipients e-mail addresses that will appear on the Bcc: field
+   */
+  bcc?: string | Address | Array<string | Address>;
+
+  /**
+   * An e-mail address that will appear on the Reply-To: field
+   */
+  replyTo?: string | Address;
+
+  /**
+   * The message-id this message is replying
+   */
+  inReplyTo?: string | Address;
+
+  /**
+   * Message-id list (an array or space separated string)
+   */
+  references?: string | string[];
+
+  /**
+   * The subject of the e-mail
+   */
+  subject?: string;
 }
 
 export interface Config {
@@ -67,4 +123,6 @@ export interface Config {
    * The path to the `mysqldump` tool.
    */
   dumpTool: string;
+
+  mail?: MailConfig;
 }

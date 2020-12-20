@@ -3,6 +3,7 @@ import { createConnections, getTables } from '../shared/database';
 import { compareTables } from './checksum';
 import { transferTables } from '../shared/dump';
 import { startReplication } from '../shared/replication';
+import { error, log, sendLogsByMail } from '../shared/logging';
 
 export async function verify(config: Config): Promise<void> {
   const { master, slave } = await createConnections(config);
@@ -12,11 +13,12 @@ export async function verify(config: Config): Promise<void> {
     const brokenTables = await compareTables(master, slave, tables);
 
     if (brokenTables.length === 0) {
-      console.log('Master and slave tables are equal, nothing to do.');
+      log('Master and slave tables are equal, nothing to do.');
       return;
     }
 
-    console.log('Some tables are not equal:', ...brokenTables);
+    log('Some tables are not equal:', ...brokenTables);
+    sendLogsByMail();
     await slave.query('STOP SLAVE FOR CHANNEL ?', [config.replicationChannel]);
     await slave.query('RESET SLAVE FOR CHANNEL ?', [config.replicationChannel]);
 
@@ -25,16 +27,16 @@ export async function verify(config: Config): Promise<void> {
     const stillBrokenTables = await compareTables(master, slave, tables);
 
     if (stillBrokenTables.length !== 0) {
-      console.error('There are still broken table after fixing, abort.', ...stillBrokenTables);
+      error('There are still broken table after fixing, abort.', ...stillBrokenTables);
       return;
     }
 
-    console.log('Tables are fixed.');
+    log('Tables are fixed.');
 
     await master.query('RESET MASTER');
     await startReplication(master, slave, config.slaveMasterConnection, config.replicationChannel);
 
-    console.log('Replication restarted, done.');
+    log('Replication restarted, done.');
   } finally {
     await Promise.all([master.end(), slave.end()]);
   }
