@@ -1,5 +1,6 @@
 {
   "name": "mysql-replication-guard",
+  "description": "Guard for MySQL replication",
   "version": "1.0.0",
   "license": "MIT",
   "main": "dist/index.js",
@@ -14,6 +15,29 @@
     "dist",
     "cli.js"
   ],
+  "author": {
+    "name": "Maximilian Schelbach",
+    "url": "https://github.com/jsd0fl1"
+  },
+  "repository": {
+    "url": "https://github.com/jsd0fl1/mysql-replication-guard.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/jsd0fl1/mysql-replication-guard/issues"
+  },
+  "keywords": [
+    "mysql",
+    "sql",
+    "replication",
+    "database",
+    "db",
+    "distributed-systems"
+  ],
+  "homepage": "https://github.com/jsd0fl1/mysql-replication-guard#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "devDependencies": {
     "@types/mysql": "^2.15.16",
     "@types/node": "^14.14.14",
