@@ -50,4 +50,21 @@ export interface Config {
    * The tables which need to be synced with the slave (or 'all' for all table in the master database)
    */
   tables: string[] | 'all';
+
+  /**
+   * The name of the replication channel. See in the
+   * [MySQL Documentation](https://dev.mysql.com/doc/refman/5.7/en/replication-multi-source.html)
+   * for detailed information.
+   */
+  replicationChannel: string;
+
+  /**
+   * The path to the `mysql` tool.
+   */
+  mysqlTool: string;
+
+  /**
+   * The path to the `mysqldump` tool.
+   */
+  dumpTool: string;
 }
