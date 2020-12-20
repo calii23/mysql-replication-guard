@@ -6,6 +6,7 @@
     "target": "ES2020",
     "module": "CommonJS",
     "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "strict": true,
     "outDir": "dist"
   },
