@@ -8,7 +8,7 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "strict": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "dist"
   },
   "include": [
